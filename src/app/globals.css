@@ -3,31 +3,30 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground: #000000;
+  --background-start: #d6dbdc;
+  --background-end: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground: #ffffff;
+    --background-start: #170257;
+    --background-end: #010123;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--foreground);
+  background: linear-gradient(to bottom, transparent, var(--background-end))
+    var(--background-start);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+.input {
+  @apply rounded p-2 bg-transparent focus:outline-none border border-white focus:border-blue-500 w-full;
 }
