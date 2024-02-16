@@ -1,9 +1,13 @@
-import Login from "@/components/Forms/Login";
+import Login from "@/components/form/Login";
+import DefaultLayout from "@/components/layouts/DefaultLayout";
 
 export default function LoginPage() {
   return (
-    <main className="w-full flex flex-col items-center pt-20  h-svh">
-      <Login />
-    </main>
+    <>
+      <DefaultLayout />
+      <main className="pt-20 max-w-xl mx-auto">
+        <Login />
+      </main>
+    </>
   );
 }

@@ -3,7 +3,7 @@
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
 
-const api = 'http://localhost:8080';
+const api = 'http://localhost:8080/authenticate';
 export async function signup(prevState: any, formData: FormData) {
   try {
     const rawData = Object.fromEntries(formData.entries());
@@ -14,7 +14,7 @@ export async function signup(prevState: any, formData: FormData) {
       form.append(key, rawData[key]);
     });
 
-    let response = await fetch(`${api}/users/signup`, {
+    let response = await fetch(`${api}/signup`, {
       method: 'POST',
       body: form,
     });
@@ -31,7 +31,7 @@ export async function signup(prevState: any, formData: FormData) {
 }
 export async function login(prevState: any, formData: FormData) {
   try {
-    let response = await fetch(`${api}/users/login`, {
+    let response = await fetch(`${api}/login`, {
       method: 'POST',
       body: formData,
     });
@@ -43,23 +43,28 @@ export async function login(prevState: any, formData: FormData) {
     cookies().set('session', data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 5,  // One week
+      maxAge: 60 * 60,
       path: '/',
     });
+    cookies().set('userName', data.user.name, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60,
+      path: '/',
+    })
   } catch (error) {
     console.log(error);
   }
-  redirect('/');
+  redirect('/studio');
 }
 
-export async function authenticate() {
-  const cookiesList = cookies();
-  if (!cookiesList.has('session')) {
-    return false;
-  }
-  const token = cookiesList.get('session');
-  console.log(token);
-  return true;
+export async function signout() {
+  cookies().delete('session');
+  cookies().delete('userName');
+  redirect('/login');
+}
+export async function getSession() {
+  return cookies().get('session')?.value;
 }
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

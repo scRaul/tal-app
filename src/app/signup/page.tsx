@@ -1,9 +1,13 @@
-import Signup from "@/components/Forms/Singup";
+import Signup from "@/components/form/Singup";
+import DefaultLayout from "@/components/layouts/DefaultLayout";
 
 export default function SignUpPage() {
   return (
-    <main className="w-full flex flex-col items-center pt-20 h-svh px-2">
-      <Signup />
-    </main>
+    <>
+      <DefaultLayout />
+      <main className="pt-20 max-w-xl mx-auto">
+        <Signup />
+      </main>
+    </>
   );
 }
