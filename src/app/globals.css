@@ -20,6 +20,7 @@ body {
   color: var(--foreground);
   background: linear-gradient(to bottom, transparent, var(--background-end))
     var(--background-start);
+  font-family: "Courier New", Courier, monospace;
 }
 
 @layer utilities {
@@ -164,4 +165,10 @@ body {
     opacity: 0;
     display: none;
   }
+}
+.sortable_x {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

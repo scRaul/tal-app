@@ -1,13 +1,14 @@
-import { getCourseById } from "@/actions/course.action";
-import Logo from "@/components/navigation/Logo";
+import { getCourseById } from "@/actions/creator.course.action";
+import LinkItem, { LinkItemOpt } from "@/components/navigation/LinkItem";
 import SidePanel from "@/components/panel/SidePanel";
-import { Course } from "@/lib/models/interfaces";
+import {
+  BarChartBig,
+  Info,
+  Keyboard,
+  LibraryBig,
+  NotebookText,
+} from "lucide-react";
 import Link from "next/link";
-
-type CourseData = {
-  message?: string;
-  course?: Course;
-};
 
 export default async function DashboardLayout({
   children,
@@ -16,26 +17,63 @@ export default async function DashboardLayout({
   children: React.ReactNode;
   params: { id: string };
 }) {
-  const data: CourseData = await getCourseById(params.id);
-  const render = data.course ? data.course.title : data.message;
+  const data = await getCourseById(params.id);
+  const course = data.course;
+  const studioLinks: LinkItemOpt[] = [
+    { label: "Studio", href: "/studio", icon: <LibraryBig /> },
+
+    {
+      label: "Course Info",
+      href: `/studio/course/${params.id}`,
+      icon: <Info />,
+    },
+
+    {
+      label: "Content",
+      href: `/studio/course/${params.id}/content`,
+      icon: <NotebookText />,
+    },
+
+    {
+      label: "Stats",
+      href: `/studio/course/${params.id}/stats`,
+      icon: <BarChartBig />,
+    },
+
+    {
+      label: "Demo",
+      href: `/studio/course/${params.id}/demo`,
+      icon: <Keyboard />,
+    },
+  ];
 
   return (
     <>
-      <SidePanel position="fixed" className="bg-inherit border left-0">
-        <Logo href="/" />
-      </SidePanel>
-      <header className="pl-20 py-10">
-        {data.course ? (
+      <header className="pl-24 pt-10">
+        {course && (
           <Link href={`/studio/course/${params.id}`}>
-            <span className="text-xl font-medium text-blue-500 hover:underline">
-              {data.course.title}
-            </span>
+            <h1 className="text-xl font-medium hover:underline">
+              <span className="text-[#ffffff33]">Course:</span>
+              <span className=""> {course.title}</span>
+            </h1>
           </Link>
-        ) : (
-          <p className="text-red-500">{data.message}</p>
         )}
       </header>
-      <main className="pl-20">{children}</main>
+      <main className="pl-24">{children}</main>
+      <SidePanel
+        position="fixed"
+        className="left-0 top-0 bg-inherit shadow-lg shadow-blue-500 text-[#ffffff55] w-20"
+      >
+        {studioLinks.map((link, index) => (
+          <LinkItem
+            className="flex-col border-b mt-5 p-5 hover:text-blue-500 w-full"
+            label={link.label}
+            href={link.href}
+            icon={link.icon}
+            key={index}
+          />
+        ))}
+      </SidePanel>
     </>
   );
 }

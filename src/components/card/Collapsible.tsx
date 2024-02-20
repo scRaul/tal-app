@@ -4,7 +4,6 @@ import { useState } from "react";
 
 interface CollapsibleProps {
   className?: string;
-  headerClassName?: string;
   icon?: React.ReactElement;
   label: string;
   children: React.ReactNode;
@@ -13,12 +12,14 @@ interface CollapsibleProps {
 
 function Collapsible(props: CollapsibleProps) {
   const [collapsed, setCollapsed] = useState<boolean>(props.startOpen || false);
-
+  function toggleCollapsed() {
+    setCollapsed(!collapsed);
+  }
   return (
     <div className={props.className}>
       <header
-        className={`flex items-center justify-center ${props.headerClassName}`}
-        onClick={() => setCollapsed(!collapsed)}
+        className="flex items-center justify-center"
+        onClick={toggleCollapsed}
       >
         {props.icon && <div className="mr-1">{props.icon}</div>}
 

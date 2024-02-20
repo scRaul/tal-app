@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 
 interface CoursePreviewProps {
-  courseList: Course[];
+  course: Course;
 }
 
-export default function MyCourseList(props: CoursePreviewProps) {
+export default function StudioCourse(props: CoursePreviewProps) {
   const [hovering, setHovering] = useState(false);
+  const course = props.course;
 
-  return props.courseList.map((course) => (
+  return (
     <div className="flex border border-[#ffffff33]" key={course.courseId}>
       <Image
         src={course.thumbnail}
@@ -19,7 +20,7 @@ export default function MyCourseList(props: CoursePreviewProps) {
         alt="course thumbnail"
       />
       <Link
-        href={`/studio/course/${course.courseId}`}
+        href={`/studio/course/${course.courseId}/content`}
         className="pl-4 p-2 cursor-pointer relative flex-grow"
         onMouseOver={() => setHovering(true)}
         onMouseOut={() => setHovering(false)}
@@ -37,5 +38,5 @@ export default function MyCourseList(props: CoursePreviewProps) {
         )}
       </Link>
     </div>
-  ));
+  );
 }

@@ -23,12 +23,17 @@ export async function signup(prevState: any, formData: FormData) {
     if (!response.ok) {
       return {message: data.message};
     }
+
   } catch (error) {
     console.log(error);
+    return {
+      message: 'Signing up failed...Please try again later.'
+    }
   }
-
-  redirect('/');
+  redirect('/login');
 }
+
+
 export async function login(prevState: any, formData: FormData) {
   try {
     let response = await fetch(`${api}/login`, {

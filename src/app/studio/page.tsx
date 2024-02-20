@@ -1,10 +1,10 @@
-import { getMyCourses } from "@/actions/course.action";
-import MyCourses from "@/components/courses/MyCourses";
-import CourseList from "@/components/courses/MyCourses";
+import { getMyCourses } from "@/actions/creator.course.action";
+import StudioController from "@/components/studio/StudioController";
+import { Course } from "@/lib/models/interfaces";
 
 export default async function StuidoPage() {
   const data = await getMyCourses();
-
+  const courseData: Course[] = data?.courses || [];
   return (
     <main className="max-w-5xl">
       <header className="mt-20">
@@ -12,7 +12,7 @@ export default async function StuidoPage() {
           Courses
         </h1>
       </header>
-      <MyCourses courseList={data} />
+      <StudioController courseData={courseData} message={data?.message} />
     </main>
   );
 }

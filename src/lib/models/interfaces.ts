@@ -10,7 +10,9 @@ export interface Course {
   thumbnail: string;
   title: string;
   description: string;
-  published: boolean;
+  isPublic: boolean
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Module {
@@ -18,7 +20,9 @@ export interface Module {
   courseId: number;
   title: string;
   index: number;
-  published: boolean;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Lesson {
@@ -27,5 +31,18 @@ export interface Lesson {
   title: string;
   content: string;
   index: number;
-  published: boolean;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CourseModule {
+  moduleId: number;
+  courseId: number;
+  title: string;
+  index: number;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  lessons: Omit<Lesson, 'content'>[];
 }

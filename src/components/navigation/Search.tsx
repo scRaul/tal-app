@@ -6,6 +6,7 @@ interface SearchBarProps {
   placeholder?: string;
   className?: string;
   buttonColor?: string;
+  handleChange?: (text: string) => void;
 }
 export function SearchBar(props: SearchBarProps) {
   return (
@@ -13,6 +14,7 @@ export function SearchBar(props: SearchBarProps) {
       <SearchInput
         className="border rounded-l-full focus-within:border-blue-700 flex-grow pl-4"
         placeholder={props.placeholder}
+        handleChange={props.handleChange}
       />
       <div
         className={`flex items-center justify-center border pr-4 p-2 rounded-r-full hover:bg-[#ffffff33] bg-[${props.buttonColor}]`}
@@ -28,12 +30,16 @@ interface SearchInputProps {
   placeholder?: string;
   xClassName?: string;
   strokeWidth?: number;
+  handleChange?: (text: string) => void;
 }
 export function SearchInput(props: SearchInputProps) {
   const [value, setValue] = useState("");
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const result = event.currentTarget.value;
     setValue(result);
+    if (props.handleChange) {
+      props.handleChange(result);
+    }
   }
   return (
     <div

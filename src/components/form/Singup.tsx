@@ -12,27 +12,16 @@ const initialState = {
 
 export default function Signup() {
   const [state, formAction] = useFormState(signup, initialState);
-  const [emailError, setEmailError] = useState("");
   const [passwordFlag, setPasswordFlag] = useState(false);
-
-  useEffect(() => {
-    if (state?.message.length) {
-      const error = state.message;
-      if (error.includes("email")) {
-        setEmailError("Invalid email was entered");
-      }
-
-      if (error.includes("password")) {
-        setPasswordFlag(true);
-      }
-    }
-  }, [state]);
 
   return (
     <form
       action={formAction}
       className="border border-white rounded p-6 flex flex-col justify-around"
     >
+      {state?.message && (
+        <small className="text-red-500">{state.message}</small>
+      )}
       <span className="font-bold text-xl">Sign up</span>
       <div className="p-1">
         <label htmlFor="name" className="block font-medium">
@@ -41,12 +30,7 @@ export default function Signup() {
         <input id="name" name="name" type="text" className="input" required />
       </div>
       <div className="p-1">
-        <label
-          htmlFor="email"
-          className={`block font-medium ${
-            emailError.length ? "text-red-500" : ""
-          }`}
-        >
+        <label htmlFor="email" className="block font-medium">
           Email
         </label>
         <input
@@ -56,7 +40,6 @@ export default function Signup() {
           className="input"
           required
         />
-        <small className="text-red-500">{emailError}</small>
       </div>
       <div className="p-1">
         <NewPasswordInput
