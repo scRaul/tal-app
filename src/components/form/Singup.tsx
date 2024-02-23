@@ -4,7 +4,7 @@ import SubmitButton from "./SubmitButton";
 import { signup } from "../../actions/auth.action";
 import NewPasswordInput from "./NewPasswordInput";
 import { useFormState } from "react-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const initialState = {
   message: "",

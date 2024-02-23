@@ -3,6 +3,14 @@ import Collapsible from "../card/Collapsible";
 import SortableList from "../card/SortableList";
 import ConfirmationButton from "../form/ConfirmationButton";
 import { deleteModule } from "@/actions/creator.module.action";
+import {
+  Plus,
+  ToggleLeft,
+  ToggleRight,
+  Wifi,
+  WifiOff,
+  Wrench,
+} from "lucide-react";
 
 interface ModuleProps {
   module: CourseModule;
@@ -20,12 +28,41 @@ export default function StudioModule(props: ModuleProps) {
       console.log(error);
     }
   }
+  function handleClick(
+    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) {
+    console.log("div");
+    event.stopPropagation();
+    event.preventDefault();
+  }
   return (
-    <Collapsible
-      label={props.module.title}
-      startOpen={true}
-      className="bg-[#0C023D] [&>header]:bg-[#3020AF] [&>header]:cursor-pointer [&>header]:text-white "
-    >
+    <details open={true} className="w-full relative border-dashed border px-2">
+      <summary className="relative" onClick={() => console.log("summary")}>
+        <span className="font-bold text-lg">{props.module.title}</span>
+        <span className="absolute t-0 right-0">
+          <div className="flex gap-4 " onClick={handleClick}>
+            <div
+              title="make it public"
+              className="rounded-md hover:bg-[#ffffff33]"
+            >
+              {props.module.isPublic ? (
+                <Wifi className=" p-1" />
+              ) : (
+                <WifiOff className=" p-1" />
+              )}
+            </div>
+            <div
+              title="add a lesson entry"
+              className="rounded-md hover:bg-[#ffffff33]"
+            >
+              <Plus className="p-1" />
+            </div>
+            <div title="settings" className="rounded-md hover:bg-[#ffffff33]">
+              <Wrench className="p-1" />
+            </div>
+          </div>
+        </span>
+      </summary>
       <SortableList className="gap-4 p-4 [&>div]:bg-white">
         {props.module.lessons.map((lesson, index) => (
           <div className="pl-1" key={index}>
@@ -42,6 +79,6 @@ export default function StudioModule(props: ModuleProps) {
           prompt="By confirming to delete, all of this module's material will be lost"
         />
       </div>
-    </Collapsible>
+    </details>
   );
 }

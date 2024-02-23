@@ -48,13 +48,13 @@ export async function login(prevState: any, formData: FormData) {
     cookies().set('session', data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24,
       path: '/',
     });
     cookies().set('userName', data.user.name, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24,
       path: '/',
     })
   } catch (error) {

@@ -1,8 +1,8 @@
 "use client";
 import { CourseModule } from "@/lib/models/interfaces";
 import SortableList from "../card/SortableList";
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Plus, X } from "lucide-react";
 import SubmitButton from "../form/SubmitButton";
 import { createModule } from "@/actions/creator.module.action";
 import StudioModule from "./StudioModule";
@@ -16,6 +16,20 @@ export default function CourseContent(props: CourseContentProps) {
   const [openModuleForm, setOpenModuleForm] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [modules, setModules] = useState<CourseModule[]>(props.content);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   function handleDelete(id: number) {
     const updatedModules = modules.filter((module) => module.moduleId !== id);
@@ -67,14 +81,25 @@ export default function CourseContent(props: CourseContentProps) {
       );
     }
   }
+  function handleReOrder(indexes: number[]) {
+    console.log(indexes);
+    const updateMod = [...modules];
+    for (let i = 0; i < updateMod.length; i++) {
+      updateMod[i].index = indexes[i];
+    }
+    setModules(updateMod);
+  }
   return (
     <div>
-      <button
-        className="bg-blue-600 font-medium p-1"
-        onClick={() => setOpenModuleForm(true)}
-      >
-        Add a module
-      </button>
+      <div className="flex justify-end">
+        <button
+          className="bg-blue-600 font-medium p-1 flex"
+          onClick={() => setOpenModuleForm(true)}
+        >
+          <Plus />
+          <span>Module</span>
+        </button>
+      </div>
       {openModuleForm && (
         <NewModuleForm
           onCancel={handleCancel}
@@ -82,16 +107,20 @@ export default function CourseContent(props: CourseContentProps) {
           state={errorMsg}
         />
       )}
-      <div className="mt-10">
-        <SortableList className="gap-4 [&>div]:border-b-4 [&>div]:border-r-4 [&>div]:border-[#3020AF] [&>div]:bg-[#3020AF]">
-          {modules.map((module, index) => (
-            <StudioModule
-              module={module}
-              key={module.index}
-              onDelete={() => handleDelete(module.moduleId)}
-            />
-          ))}
-        </SortableList>
+
+      <div className="mt-2">
+        {/* <SortableList
+          className="gap-4 [&>div]:border-b-4 [&>div]:border-r-4 [&>div]:border-[#3020AF] [&>div]:bg-[#3020AF]"
+          onReOrder={handleReOrder}
+        > */}
+        {modules.map((module, index) => (
+          <StudioModule
+            module={module}
+            key={index}
+            onDelete={() => handleDelete(module.moduleId)}
+          />
+        ))}
+        {/* </SortableList> */}
       </div>
     </div>
   );

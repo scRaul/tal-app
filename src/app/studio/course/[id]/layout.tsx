@@ -49,7 +49,7 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <header className="pl-24 pt-10">
+      <header className="md:pl-24 pt-10">
         {course && (
           <Link href={`/studio/course/${params.id}`}>
             <h1 className="text-xl font-medium hover:underline">
@@ -59,10 +59,10 @@ export default async function DashboardLayout({
           </Link>
         )}
       </header>
-      <main className="pl-24">{children}</main>
+      <main className="md:pl-24">{children}</main>
       <SidePanel
         position="fixed"
-        className="left-0 top-0 bg-inherit shadow-lg shadow-blue-500 text-[#ffffff55] w-20"
+        className="left-0 top-0 bg-inherit shadow-lg shadow-blue-500 text-[#ffffff55] w-20 hidden md:block"
       >
         {studioLinks.map((link, index) => (
           <LinkItem

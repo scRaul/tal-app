@@ -14,7 +14,7 @@ export default function ConfirmationButton(props: ConfirmationButtonProps) {
     props.onConfirm();
   }
   return (
-    <div className={props.className}>
+    <div className={props.className} style={{ zIndex: 90 }}>
       <button
         id="button"
         onClick={() => setPrompt(true)}
