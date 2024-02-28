@@ -6,6 +6,7 @@ import { Plus, X } from "lucide-react";
 import SubmitButton from "../form/SubmitButton";
 import { createModule } from "@/actions/creator.module.action";
 import StudioModule from "./StudioModule";
+import TitleForm from "../form/TitleForm";
 
 interface CourseContentProps {
   courseId: string;
@@ -101,7 +102,10 @@ export default function CourseContent(props: CourseContentProps) {
         </button>
       </div>
       {openModuleForm && (
-        <NewModuleForm
+        <TitleForm
+          label="New module title:"
+          submitText="Create Module"
+          pendingText="creating new module..."
           onCancel={handleCancel}
           onSubmit={handleSubmit}
           state={errorMsg}

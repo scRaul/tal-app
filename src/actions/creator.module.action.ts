@@ -76,3 +76,35 @@ export async function deleteModule(id: number) {
     }
   }
 }
+
+export async function renameModule(moduleId: number, newTitle: string) {
+  try {
+    const token = cookies().get('session')?.value;
+    if (!token) {
+      return {
+        message: 'unable to verify user'
+      }
+    }
+    var form = new FormData();
+    form.append('title', newTitle);
+
+    let response = await fetch(`${api}/rename/${moduleId}`, {
+      method: 'POST',
+      headers: {'Authorization': 'bearer ' + token},
+      body: form
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      console.log(data);
+    }
+
+    return {
+      message: data.message, module: data.module
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      message: 'failed to update', module: {}
+    }
+  }
+}

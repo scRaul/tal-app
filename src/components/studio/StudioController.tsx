@@ -1,13 +1,14 @@
 "use client";
 import { createCourse } from "@/actions/creator.course.action";
-import SubmitButton from "@/components/form/SubmitButton";
+
 import { SearchBar } from "@/components/navigation/Search";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Course } from "@/lib/models/interfaces";
 import StudioCourse from "./StudioCourse";
 import { intersection, union } from "@/lib/util/set";
+import Modal from "../card/Modal";
+import TitleForm from "../form/TitleForm";
 
 interface StudioControllerProps {
   courseData: Course[];
@@ -143,14 +144,16 @@ export default function StudioController(props: StudioControllerProps) {
 
   return (
     <div className="">
-      <div className="flex items-center">
-        <SearchBar
-          placeholder="Search your courses"
-          handleChange={SearchCourses}
-        />
-        <div>
+      <div className="flex flex-col md:flex-row md:items-end gap-2">
+        <div className="flex gap-4">
+          <SearchBar
+            className="flex-grow"
+            placeholder="Search your courses"
+            handleChange={SearchCourses}
+          />
+
           <select
-            className="input"
+            className="focus:outline-none bg-inherit border "
             value={filter}
             onChange={handleFilterChange}
           >
@@ -163,58 +166,36 @@ export default function StudioController(props: StudioControllerProps) {
         </div>
 
         <div className="flex-grow"></div>
-        {!openCourseForm && (
-          <button
-            className="font-bold bg-blue-700  hover:bg-blue-800 h-fit p-2"
-            onClick={() => setOpenCourseForm(true)}
-          >
-            New course
-          </button>
-        )}
+        <Modal
+          trigger={
+            <button
+              className="font-bold bg-blue-700 hover:bg-blue-800 h-fit p-2"
+              onClick={() => setOpenCourseForm(true)}
+            >
+              New course
+            </button>
+          }
+          modalOpen={openCourseForm}
+        >
+          <div className="fixed left-0 w-full">
+            <TitleForm
+              label="New Course Title"
+              submitText="Create Course"
+              pendingText="createing course ..."
+              className="bg-indigo-950"
+              onCancel={handleCancel}
+              onSubmit={handleSubmit}
+              state={errorMsg}
+            />
+          </div>
+        </Modal>
       </div>
-      {openCourseForm && (
-        <NewCourseForm
-          onCancel={handleCancel}
-          onSubmit={handleSubmit}
-          state={errorMsg}
-        />
-      )}
+
       <div className="flex flex-col gap-4 py-10">
         {filteredCourses.map((course, index) => (
           <StudioCourse course={course} key={index} />
         ))}
       </div>
     </div>
-  );
-}
-
-interface CourseFormProps {
-  onCancel: () => void;
-  state: string;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
-}
-function NewCourseForm(props: CourseFormProps) {
-  return (
-    <form
-      className="rounded border  max-w-xl mx-auto mt-10 pt-3 px-3"
-      onSubmit={props.onSubmit}
-    >
-      <X
-        className="hover:bg-[#ffffff33] rounded-full p-1"
-        onClick={props.onCancel}
-      />
-      <div className="flex flex-col px-10 pb-5 gap-3">
-        <label htmlFor="title" className="w-full font-bold">
-          New course title:
-        </label>
-        <input name="title" id="title" type="text" className="input" />
-        <SubmitButton
-          text={"Create Course"}
-          pendingText={"Creating a new course..."}
-          className="w-full rounded p-2 bg-green-600 hover:bg-green-400"
-        />
-        <small className="text-red-500">{props.state}</small>
-      </div>
-    </form>
   );
 }

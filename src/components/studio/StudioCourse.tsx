@@ -25,12 +25,10 @@ export default function StudioCourse(props: CoursePreviewProps) {
         onMouseOver={() => setHovering(true)}
         onMouseOut={() => setHovering(false)}
       >
-        <div className={`${hovering ? "blur" : ""}`}>
-          <p className="font-bold">{course.title}</p>
-          <p className="font-light">{course.description}</p>
-        </div>
+        <p className="font-bold">{course.title}</p>
+        <p className="font-light">{course.description}</p>
         {hovering && (
-          <div className="absolute left-0 top-0 w-full h-full flex justify-center items-center">
+          <div className="absolute left-0 top-0 w-full h-full flex justify-center items-center backdrop-blur-sm">
             <span className="text-blue-500 font-xl font-extrabold ">
               Edit/Manage Course
             </span>

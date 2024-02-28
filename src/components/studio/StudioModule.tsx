@@ -1,16 +1,12 @@
 import { CourseModule } from "@/lib/models/interfaces";
-import Collapsible from "../card/Collapsible";
+
 import SortableList from "../card/SortableList";
 import ConfirmationButton from "../form/ConfirmationButton";
 import { deleteModule } from "@/actions/creator.module.action";
-import {
-  Plus,
-  ToggleLeft,
-  ToggleRight,
-  Wifi,
-  WifiOff,
-  Wrench,
-} from "lucide-react";
+import { Plus, Wifi, WifiOff, Wrench } from "lucide-react";
+import Modal from "../card/Modal";
+import { FormEvent, useState } from "react";
+import TitleForm from "../form/TitleForm";
 
 interface ModuleProps {
   module: CourseModule;
@@ -18,6 +14,8 @@ interface ModuleProps {
 }
 
 export default function StudioModule(props: ModuleProps) {
+  const [openSettings, setOpenSettings] = useState(false);
+  const [openRenameMod, setOpenRenameMod] = useState(false);
   async function handleDelete() {
     try {
       const result = await deleteModule(props.module.moduleId);
@@ -28,10 +26,12 @@ export default function StudioModule(props: ModuleProps) {
       console.log(error);
     }
   }
+  async function handleTitleChange() {
+    //todo
+  }
   function handleClick(
     event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
   ) {
-    console.log("div");
     event.stopPropagation();
     event.preventDefault();
   }
@@ -58,7 +58,55 @@ export default function StudioModule(props: ModuleProps) {
               <Plus className="p-1" />
             </div>
             <div title="settings" className="rounded-md hover:bg-[#ffffff33]">
-              <Wrench className="p-1" />
+              <Modal
+                trigger={
+                  <Wrench
+                    className="p-1"
+                    onClick={() => setOpenSettings(!openSettings)}
+                  />
+                }
+                modalOpen={openSettings}
+                xOffset={-50}
+                yOffset={25}
+              >
+                <div className="bg-gray-700 py-4 px-1 w-fit rounded">
+                  <Modal
+                    trigger={
+                      <button
+                        className="hover:bg-[#ffffff33] p-1"
+                        onClick={() => setOpenRenameMod(true)}
+                      >
+                        Rename
+                      </button>
+                    }
+                    modalOpen={openRenameMod}
+                    xOffset={-320}
+                    yOffset={-80}
+                  >
+                    <TitleForm
+                      className="w-80 bg-indigo-950 rounded shadow-xl"
+                      label={`Rename "${props.module.title}" to:`}
+                      submitText={"Change title"}
+                      pendingText={"changeing title"}
+                      onCancel={() => setOpenRenameMod(false)}
+                      state={""}
+                      onSubmit={function (
+                        event: FormEvent<HTMLFormElement>
+                      ): Promise<void> {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />
+                  </Modal>
+
+                  <div className="mx-auto w-fit">
+                    <ConfirmationButton
+                      onConfirm={handleDelete}
+                      buttonLabel="Delete"
+                      prompt="By confirming to delete, all of this module's material will be lost"
+                    />
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
         </span>
@@ -70,15 +118,6 @@ export default function StudioModule(props: ModuleProps) {
           </div>
         ))}
       </SortableList>
-      <div className="flex justify-between items-center py-3 px-2">
-        <button className="bg-blue-500 rounded  p-2">Add a Lesson</button>
-        <ConfirmationButton
-          className=" [&>#button]:bg-red-500  [&>dialog]:bg-slate-400"
-          onConfirm={handleDelete}
-          buttonLabel="Delete"
-          prompt="By confirming to delete, all of this module's material will be lost"
-        />
-      </div>
     </details>
   );
 }
