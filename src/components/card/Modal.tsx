@@ -13,7 +13,7 @@ export default function Modal(props: ModalProps) {
     <div className="relative">
       {props.trigger}
       <div
-        className="w-fit"
+        className="w-full"
         style={{
           backgroundColor: "transparent",
           position: "absolute",
@@ -31,7 +31,7 @@ export default function Modal(props: ModalProps) {
 //ex use:
 /*
 <Modal
-    modalOpen={modalOpen[5]}
+    modalOpen={useStateVar}
     xOffset={-20}
     yOffset={-80}
     trigger={<MousePointerClick onClick={() => toggleModal(5)} />}

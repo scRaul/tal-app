@@ -6,12 +6,12 @@ import { login } from "../../actions/auth.action";
 
 export default function Login() {
   const [state, formAction] = useFormState(login, undefined);
-
   return (
     <form
       action={formAction}
       className="border border-white rounded p-6 flex flex-col justify-around"
     >
+      <small className="text-red-500">{state?.message}</small>
       <span className="font-bold text-xl">Log in</span>
       <div className="p-1">
         <label htmlFor="email" className="block font-medium">
@@ -38,7 +38,7 @@ export default function Login() {
       <div className="p-1">
         <SubmitButton
           text={"Log in"}
-          pendingText={"loging in..."}
+          pendingText={"logging in..."}
           className="w-full rounded p-2 bg-blue-500 hover:bg-blue-400"
         />
       </div>

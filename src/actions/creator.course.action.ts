@@ -17,9 +17,7 @@ export async function createCourse(title: string) {
   try {
     const token = cookies().get('session')?.value;
     if (!token) {
-      return {
-        message: 'unable to verify user'
-      }
+      return {message: 'unable to verify user'};
     }
     var form = new FormData();
     form.append('title', title);
@@ -50,9 +48,7 @@ export async function updateCourse(prevState: any, formData: FormData) {
   try {
     const token = cookies().get('session')?.value;
     if (!token) {
-      return {
-        message: 'unable to verify user'
-      }
+      return {message: 'unable to verify user'};
     }
     const rawData = Object.fromEntries(formData.entries());
     const isPublic = formData.get('isPublic') === 'on' ? 'true' : 'false';
